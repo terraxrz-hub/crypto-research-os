@@ -1,0 +1,52 @@
+name: Post-Publication Review Reminder
+
+# The audit's other missing piece: nothing tracked whether a published PASS
+# WITH LIMITATIONS entry ever got revisited. This runs weekly and flags any
+# research-entry issue open 30+ days with status:PASS-WITH-LIMITATIONS and
+# no "needs-review" label yet, per the re-review trigger in
+# docs/07-publication-standard.md.
+
+on:
+  schedule:
+    - cron: "0 9 * * 1" # every Monday 09:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  flag-stale-limitations:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const cutoff = new Date();
+            cutoff.setDate(cutoff.getDate() - 30);
+
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: "status:PASS-WITH-LIMITATIONS",
+              state: "all",
+              per_page: 100,
+            });
+
+            for (const issue of issues) {
+              const alreadyFlagged = issue.labels.some(l => l.name === "needs-review");
+              const isOldEnough = new Date(issue.created_at) < cutoff;
+
+              if (isOldEnough && !alreadyFlagged) {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  labels: ["needs-review"],
+                });
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: "🔔 This entry has been PASS WITH LIMITATIONS for 30+ days. Per the [re-review trigger](../../blob/main/docs/07-publication-standard.md#re-review-trigger), check whether the missing verification is now available and fill in the **Outcome** field.",
+                });
+              }
+            }

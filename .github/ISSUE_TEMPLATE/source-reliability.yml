@@ -1,0 +1,44 @@
+name: "Source Reliability Record"
+description: "One row of the Source Reliability Database — tracks a named source's track record over time. Create once per source, then update as new evidence comes in."
+title: "[Source] "
+labels: ["type:source"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        V1 treated "trusted" as a permanent, unexamined label. This tracks it instead. Track record here is *context*, not a way to upgrade a claim's Evidence Tier — see the resolved ambiguous cases in docs/02-evidence-framework.md.
+
+  - type: input
+    id: source-name
+    attributes:
+      label: Source name
+      placeholder: "e.g. Arkham, CertiK, CoinDesk"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: source-tier
+    attributes:
+      label: Default tier (docs/02-evidence-framework.md source table)
+      options:
+        - "Tier 1 — Primary / original record"
+        - "Tier 2 — Independent technical auditor"
+        - "Tier 3 — Trusted analytics provider"
+        - "Tier 4/5 — News organization"
+        - "Discovery only — social media"
+    validations:
+      required: true
+
+  - type: textarea
+    id: track-record
+    attributes:
+      label: Track record log
+      description: "Append-only: date, related research-entry issue link, was this source right or wrong, brief note."
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: "Anything else worth flagging about this source's reliability pattern."

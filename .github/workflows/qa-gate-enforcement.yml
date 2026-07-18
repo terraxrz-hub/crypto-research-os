@@ -1,0 +1,75 @@
+name: QA Gate Enforcement
+
+# Turns the QA Gate from an honor-system checklist into an enforced one.
+# Fires whenever a "status:PASS" or "status:PASS-WITH-LIMITATIONS" label is
+# applied to a research-entry issue. If not all 10 QA checkboxes in the
+# issue body are ticked, the label is removed, a "qa-gate-blocked" label is
+# applied instead, and a comment explains why.
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  enforce:
+    if: contains(github.event.label.name, 'status:PASS')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body || "";
+            const appliedLabel = context.payload.label.name;
+
+            // Count checked vs total checkboxes under the QA Gate section.
+            const allBoxes = body.match(/- \[[ xX]\]/g) || [];
+            const checked = body.match(/- \[[xX]\]/g) || [];
+
+            const total = allBoxes.length;
+            const done = checked.length;
+
+            if (total < 10) {
+              core.warning(`Expected 10 QA checkboxes, found ${total}. Skipping strict enforcement but flagging.`);
+            }
+
+            if (done < total || total === 0) {
+              // Remove the status label that was just applied.
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  name: appliedLabel,
+                });
+              } catch (e) {
+                core.warning(`Could not remove label (may already be gone): ${e.message}`);
+              }
+
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: ["qa-gate-blocked"],
+              });
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: `⚠️ **QA Gate not satisfied.** \`${appliedLabel}\` was removed automatically.\n\n${done}/${total} checkboxes are ticked. Per [QA Gate](../../blob/main/docs/08-qa-gate.md), all 10 questions must be answered Yes before a PASS status can be applied. Tick the remaining boxes and re-apply the label.`,
+              });
+            } else {
+              // All boxes checked — remove any stale qa-gate-blocked label.
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  name: "qa-gate-blocked",
+                });
+              } catch (e) {
+                // fine if it wasn't present
+              }
+            }

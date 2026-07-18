@@ -1,0 +1,39 @@
+name: "Correction"
+description: "Record a correction to something already published. V1 had no defined process for this at all."
+title: "[Correction] "
+labels: ["type:correction"]
+body:
+  - type: input
+    id: original-entry
+    attributes:
+      label: Original research-entry issue
+      description: "Link the issue number/URL of the original Research Entry being corrected."
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-changed
+    attributes:
+      label: What changed
+      description: "What new evidence or contradiction triggered this correction?"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: new-status
+    attributes:
+      label: Revised publication status
+      options:
+        - "WAIT (retract)"
+        - "PASS WITH LIMITATIONS (revised)"
+        - "PASS (revised)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: correction-text
+    attributes:
+      label: Correction text (as published)
+      description: "The actual correction wording, following docs/03-writing-and-mechanism.md standards."
+    validations:
+      required: true

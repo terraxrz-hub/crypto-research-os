@@ -1,0 +1,59 @@
+name: Changelog Automation
+
+# Fixes the audit's finding that rule changes could happen silently. Any push
+# to main that touches docs/ auto-opens a type:changelog issue pre-filled
+# with which files changed, so the reasoning has to be written down before
+# the change is considered final.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+
+jobs:
+  open-changelog-entry:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get changed doc files
+        id: diff
+        run: |
+          echo "files<<EOF" >> "$GITHUB_OUTPUT"
+          git diff --name-only HEAD~1 HEAD -- docs/ >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const files = `${{ steps.diff.outputs.files }}`.trim();
+            const sha = context.sha.substring(0, 7);
+            const actor = context.actor;
+
+            const body = [
+              `**Version:** (fill in — e.g. v2.1)`,
+              `**Section changed:**`,
+              files.split("\n").map(f => `- \`${f}\``).join("\n"),
+              ``,
+              `**Change:** (describe exactly what changed — avoid vague summaries)`,
+              ``,
+              `**Reason:** (what problem did the previous rule cause?)`,
+              ``,
+              `**Impact:** (how does this affect future research or writing?)`,
+              ``,
+              `_Auto-opened for commit ${sha} pushed by @${actor}. Fill in the fields above before closing — this is the enforced version of the old Changelog page._`,
+            ].join("\n");
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[Changelog] docs change — ${sha}`,
+              labels: ["type:changelog"],
+              body,
+            });

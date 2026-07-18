@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Framework docs
+    url: https://github.com/OWNER/crypto-research-os/tree/main/docs
+    about: "Read the standards before filing an entry — start with docs/00-objective.md"

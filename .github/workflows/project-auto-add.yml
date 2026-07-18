@@ -1,0 +1,31 @@
+name: Add to Project Board
+
+# Auto-adds new Research Entries and Source Reliability records to the
+# GitHub Projects (v2) board acting as the Research Database / Source
+# Reliability Database. Requires a PAT with `project` scope stored as
+# the ADD_TO_PROJECT_PAT secret (the default GITHUB_TOKEN cannot write to
+# user/org-level Projects v2). See SETUP.md for how to create it and the
+# exact project URL to put below.
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  add-research-to-project:
+    if: contains(github.event.issue.labels.*.name, 'type:research')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: https://github.com/users/OWNER/projects/PROJECT_NUMBER # Research Database board — replace with your real URL
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+
+  add-source-to-project:
+    if: contains(github.event.issue.labels.*.name, 'type:source')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: https://github.com/users/OWNER/projects/PROJECT_NUMBER_2 # Source Reliability Database board — replace with your real URL
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
