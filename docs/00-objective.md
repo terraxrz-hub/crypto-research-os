@@ -22,3 +22,5 @@ This framework assumes the reader is a **crypto-literate but non-specialist audi
 
 ---
 This is the only static-prose "why" page in the system. Everything downstream of it — [Sources & Research Priority](01-sources-and-priority.md), [Evidence Framework](02-evidence-framework.md), [Decision Framework](06-decision-framework.md), [Writing & Mechanism](03-writing-and-mechanism.md), [Publication Standard](07-publication-standard.md), [QA Gate](08-qa-gate.md) — exists to operationalize this page. If a rule anywhere else can't be traced back to a principle here, it doesn't belong in the framework.
+
+<!-- Test workflow -->
