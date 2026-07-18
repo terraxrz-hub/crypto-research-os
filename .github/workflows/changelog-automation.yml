@@ -1,53 +1,74 @@
 name: Changelog Automation
 
-# Fixes the audit's finding that rule changes could happen silently. Any push
-# to main that touches docs/ auto-opens a type:changelog issue pre-filled
-# with which files changed, so the reasoning has to be written down before
-# the change is considered final.
-
 on:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
       - "docs/**"
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   open-changelog-entry:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      contents: read
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
-      - name: Get changed doc files
+      - name: Get changed documentation files
         id: diff
+        shell: bash
         run: |
-          echo "files<<EOF" >> "$GITHUB_OUTPUT"
-          git diff --name-only HEAD~1 HEAD -- docs/ >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
+          if git rev-parse HEAD~1 >/dev/null 2>&1; then
+            FILES=$(git diff --name-only HEAD~1 HEAD -- docs/)
+          else
+            FILES=$(git ls-files docs/)
+          fi
 
-      - uses: actions/github-script@v7
+          echo "FILES<<EOF" >> $GITHUB_ENV
+          echo "$FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create changelog issue
+        uses: actions/github-script@v7
+        env:
+          FILES: ${{ env.FILES }}
         with:
           script: |
-            const files = `${{ steps.diff.outputs.files }}`.trim();
             const sha = context.sha.substring(0, 7);
             const actor = context.actor;
 
+            const files = process.env.FILES
+              ? process.env.FILES
+                  .split("\n")
+                  .filter(Boolean)
+                  .map(f => `- \`${f}\``)
+                  .join("\n")
+              : "- No documentation files detected.";
+
             const body = [
-              `**Version:** (fill in — e.g. v2.1)`,
-              `**Section changed:**`,
-              files.split("\n").map(f => `- \`${f}\``).join("\n"),
-              ``,
-              `**Change:** (describe exactly what changed — avoid vague summaries)`,
-              ``,
-              `**Reason:** (what problem did the previous rule cause?)`,
-              ``,
-              `**Impact:** (how does this affect future research or writing?)`,
-              ``,
-              `_Auto-opened for commit ${sha} pushed by @${actor}. Fill in the fields above before closing — this is the enforced version of the old Changelog page._`,
+              "**Version:** (fill in — e.g. v2.1)",
+              "",
+              "**Section changed:**",
+              files,
+              "",
+              "**Change:**",
+              "(describe exactly what changed)",
+              "",
+              "**Reason:**",
+              "(why was this change necessary?)",
+              "",
+              "**Impact:**",
+              "(how does this affect future research or writing?)",
+              "",
+              "---",
+              `_Auto-generated from commit ${sha} pushed by @${actor}._`
             ].join("\n");
 
             await github.rest.issues.create({
@@ -55,5 +76,5 @@ jobs:
               repo: context.repo.repo,
               title: `[Changelog] docs change — ${sha}`,
               labels: ["type:changelog"],
-              body,
+              body
             });
