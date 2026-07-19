@@ -81,7 +81,7 @@ jobs:
           } >> "$GITHUB_ENV"
 
       - name: Open scaffold issue
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           TOPIC: ${{ inputs.topic }}
           DRAFT: ${{ env.DRAFT }}
