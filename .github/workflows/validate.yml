@@ -72,4 +72,3 @@ jobs:
           check "SOURCE_PROJECT_URL" "$source_url"
 
           exit $fail
-          
