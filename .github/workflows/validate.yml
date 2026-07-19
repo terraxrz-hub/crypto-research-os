@@ -20,7 +20,7 @@ jobs:
   yaml-syntax:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install yamllint
         run: pip install --quiet yamllint
       - name: Lint workflow and issue-form YAML
@@ -31,7 +31,7 @@ jobs:
   doc-links:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Check internal markdown links
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
