@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Fills the role of the old static "Research Template" page — but every entry here is a queryable, permanent row instead of a form that gets discarded after publishing. See `docs/` for the standards this form invokes.
+        Fills the role of the old static "Research Template" page — but every entry here is a queryable, permanent row instead of a form that gets discarded after publishing. See `/rules/`, `/frameworks/`, `/playbooks/`, and `/checklists/` for the standards this form invokes.
 
   - type: input
     id: candidate-story
@@ -20,14 +20,14 @@ body:
     id: story-selection
     attributes:
       label: Story selection
-      description: "Why this story? Alternative stories considered? Why does this one have the highest EV? (Decision Framework — docs/06-decision-framework.md)"
+      description: "Why this story? Alternative stories considered? Why does this one have the highest EV? (Decision Framework — /frameworks/FRAMEWORK-003-decision-framework.md)"
     validations:
       required: true
 
   - type: dropdown
     id: evidence-tier
     attributes:
-      label: Evidence Tier (docs/02-evidence-framework.md)
+      label: Evidence Tier (/frameworks/FRAMEWORK-001-evidence-tier-framework.md)
       options:
         - "Tier 1 — Primary Evidence"
         - "Tier 2 — Independent Confirmation"
@@ -44,7 +44,7 @@ body:
     id: verification
     attributes:
       label: Verification
-      description: "Facts confirmed / facts still uncertain / conflicting reports. Cite sources per docs/01-sources-and-priority.md."
+      description: "Facts confirmed / facts still uncertain / conflicting reports. Cite sources per /rules/RULE-001-source-priority-order.md."
     validations:
       required: true
 
@@ -60,7 +60,7 @@ body:
     id: draft
     attributes:
       label: Writing draft
-      description: "Standalone tweet (default) or thread if genuinely required. See docs/03-writing-and-mechanism.md."
+      description: "Standalone tweet (default) or thread if genuinely required. See /frameworks/FRAMEWORK-004-writing-and-mechanism.md."
     validations:
       required: true
 
@@ -68,12 +68,12 @@ body:
     id: visuals
     attributes:
       label: Visual assets
-      description: "Recommended visual, source, evidence level, why it adds value. See docs/04-visual-assets.md. Write 'No supporting visual recommended' if none qualify."
+      description: "Recommended visual, source, evidence level, why it adds value. See /rules/RULE-002-visual-asset-priority.md. Write 'No supporting visual recommended' if none qualify."
 
   - type: checkboxes
     id: qa-gate
     attributes:
-      label: "QA Gate (docs/08-qa-gate.md) — all ten must be checked before status:PASS or status:PASS-WITH-LIMITATIONS can be applied"
+      label: "QA Gate (/checklists/CHECKLIST-001-qa-gate.md) — all ten must be checked before status:PASS or status:PASS-WITH-LIMITATIONS can be applied"
       options:
         - label: "1. Every factual claim independently verified"
         - label: "2. Prices/market data refreshed immediately before publication"
@@ -89,7 +89,7 @@ body:
   - type: dropdown
     id: publication-status
     attributes:
-      label: Publication status (docs/07-publication-standard.md)
+      label: Publication status (/rules/RULE-003-publication-standard.md)
       options:
         - "WAIT"
         - "PASS WITH LIMITATIONS"

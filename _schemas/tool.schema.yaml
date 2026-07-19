@@ -1,0 +1,24 @@
+# Extends _common.schema.yaml. A Tool is a queryable external
+# platform/API/interface — see /tools/README.md.
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "tool.schema.yaml"
+allOf:
+  - $ref: "_common.schema.yaml"
+  - type: object
+    required: [category, url, access, reliability_tier]
+    properties:
+      category:
+        type: string
+        description: 'e.g. "on-chain-analytics", "blockchain-explorer", "security-audit". Controlled vocabulary — see /ARCHITECTURE.md §2.'
+      url: { type: string, format: uri }
+      access:
+        type: string
+        description: 'e.g. "web + api", "api-key required", "web only".'
+      reliability_tier:
+        type: integer
+        minimum: 1
+        maximum: 7
+        description: "Default Evidence Tier (per FRAMEWORK-001) when this tool's output is the sole cited source."
+      mcp_endpoint:
+        type: [string, "null"]
+        description: "Reserved for future use — an MCP server/tool name once this Tool is wired up for live agent access. See /ARCHITECTURE.md §6."

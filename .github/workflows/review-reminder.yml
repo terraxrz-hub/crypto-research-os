@@ -4,7 +4,7 @@ name: Post-Publication Review Reminder
 # WITH LIMITATIONS entry ever got revisited. This runs weekly and flags any
 # research-entry issue open 30+ days with status:PASS-WITH-LIMITATIONS and
 # no "needs-review" label yet, per the re-review trigger in
-# docs/07-publication-standard.md.
+# /rules/RULE-003-publication-standard.md.
 
 on:
   schedule:
@@ -49,7 +49,7 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issue.number,
-                  body: "🔔 This entry has been PASS WITH LIMITATIONS for 30+ days. Per the [re-review trigger](../../blob/main/docs/07-publication-standard.md#re-review-trigger), check whether the missing verification is now available and fill in the **Outcome** field.",
+                  body: "🔔 This entry has been PASS WITH LIMITATIONS for 30+ days. Per the [re-review trigger](../../blob/main//rules/RULE-003-publication-standard.md#re-review-trigger), check whether the missing verification is now available and fill in the **Outcome** field.",
                 });
               }
             }

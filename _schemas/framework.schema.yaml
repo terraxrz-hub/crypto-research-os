@@ -1,0 +1,17 @@
+# Extends _common.schema.yaml. A Framework is a multi-criteria reasoning
+# system — see /frameworks/README.md.
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "framework.schema.yaml"
+allOf:
+  - $ref: "_common.schema.yaml"
+  - type: object
+    required: [owns, criteria]
+    properties:
+      owns:
+        type: array
+        items: { type: string }
+        description: "Concepts this Framework is the single canonical owner of — e.g. \"evidence tier taxonomy\". Any other object touching one of these must link here, not restate."
+      criteria:
+        type: array
+        items: { type: string }
+        description: "The named dimensions/tiers/steps that make up this Framework's reasoning model."

@@ -2,7 +2,7 @@
 
 ## Using the framework
 
-Start with [`docs/00-objective.md`](../docs/00-objective.md), then [`docs/10-daily-workflow.md`](../docs/10-daily-workflow.md) for the day-to-day sequence. `README.md` covers the repository layout and daily-use steps at a glance.
+Start with [`/OBJECTIVE.md`](/OBJECTIVE.md), then [`/playbooks/PLAYBOOK-0002-daily-workflow.md`](/playbooks/PLAYBOOK-0002-daily-workflow.md) for the day-to-day sequence. `README.md` covers the repository layout and daily-use steps at a glance.
 
 ## Something isn't working
 

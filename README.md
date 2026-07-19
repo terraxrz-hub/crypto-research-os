@@ -1,65 +1,62 @@
 # Crypto Research OS
 
-A GitHub-native research operating system for daily crypto research, verification, and publication — one canonical page per rule, database-backed history instead of static prose, and a QA gate that's enforced by automation rather than trusted on the honor system.
+A GitHub-native **AI Research Operating System** for crypto research, verification, and publication — typed knowledge objects instead of flat prose, database-backed history instead of static docs, and a QA gate enforced by automation rather than trusted on the honor system.
 
-GitHub is the platform of record: Issues are the database, Projects is the reporting layer, Actions is the enforcement layer, and `docs/` is the single, versioned source of truth for the rules themselves. There is no external workspace, export, or secondary tool to keep in sync — everything the framework needs to operate lives in this repository.
+GitHub is the platform of record: Issues are the live database, Projects is the reporting layer, Actions is the enforcement layer, and the **knowledge layer** below is the versioned, retrieval-ready source of truth — designed to be a long-term knowledge base for an AI agent, not just documentation for a human. See [ARCHITECTURE.md](ARCHITECTURE.md) for the full design (object taxonomy, retrieval strategy, knowledge graph, scalability to 5,000+ objects), [MIGRATION.md](MIGRATION.md) for how the prior flat structure was cut over, [SETUP.md](SETUP.md) for first-time repository setup, and [CONTRIBUTING.md](CONTRIBUTING.md) before changing any knowledge object.
 
-See [SETUP.md](SETUP.md) for first-time setup (Projects boards, secrets, branch protection, releases) and [CHANGELOG.md](CHANGELOG.md) for version history. See [CONTRIBUTING.md](CONTRIBUTING.md) before changing any file in `docs/`.
-
-## Architecture
+## Knowledge layer
 
 ```
 crypto-research-os
-├── docs/                          — Philosophy & Standards layer (static, one page per rule)
-│   ├── 00-objective.md
-│   ├── 01-sources-and-priority.md
-│   ├── 02-evidence-framework.md   ← canonical evidence tiers, referenced everywhere
-│   ├── 03-writing-and-mechanism.md
-│   ├── 04-visual-assets.md
-│   ├── 05-on-chain-verification.md
-│   ├── 06-decision-framework.md
-│   ├── 07-publication-standard.md
-│   ├── 08-qa-gate.md
-│   ├── 09-research-workflow.md
-│   ├── 10-daily-workflow.md       ← start here for the day-to-day sequence
-│   └── glossary.md
-├── prompts/
-│   └── prompt-library.md          — Tooling layer: one prompt per workflow step, each a thin trigger into docs/
+├── OBJECTIVE.md                 — the one static "why" page everything else operationalizes
+├── GLOSSARY.md                  — single definitions, referenced on first use everywhere
+├── rules/                       — atomic, checkable constraints (RULE-001 .. 003)
+├── frameworks/                  — multi-criteria reasoning models (FRAMEWORK-001 .. 004)
+├── playbooks/                   — ordered procedures (PLAYBOOK-0001 .. 0002)
+├── checklists/                  — enumerable, machine-checkable gates (CHECKLIST-001 — QA Gate)
+├── tools/                       — queryable external platforms (TOOL-00001 .. , sharded by id)
+├── sources/                     — tracked evidence-reliability records (SOURCE-000001 .. , sharded)
+├── research/                    — graduated, finalized findings (empty until Issues graduate — see ARCHITECTURE.md §8)
+├── examples/                    — worked, illustrative applications (EXAMPLE-00001 .. )
+├── prompts/                     — thin trigger text, one per Playbook phase (PROMPT-0001 .. 0007)
+├── _schemas/                    — JSON-Schema contract per object type
+├── MANIFEST.jsonl               — flat index of every knowledge object (id, type, tags, related, path)
+├── ARCHITECTURE.md              — full design rationale
+├── MIGRATION.md                 — old docs/ → new object-type mapping
 ├── scripts/
-│   └── apply-branch-protection.sh — Reproducible `gh` script for the recommended ruleset (see SETUP.md)
+│   └── apply-branch-protection.sh
 ├── .github/
-│   ├── ISSUE_TEMPLATE/            — Operating layer: Research, Source Reliability, Correction, and Changelog "databases"
-│   ├── workflows/                 — Automation: QA gate enforcement, changelog automation, project sync, review reminders, releases, validation, AI-assisted drafting
-│   ├── labels.yml                 — Evidence tiers, publication status, entry types as repo labels
-│   ├── dependabot.yml             — Keeps third-party Actions current
-│   ├── CODEOWNERS
-│   ├── PULL_REQUEST_TEMPLATE.md
-│   ├── SECURITY.md
-│   └── SUPPORT.md
+│   ├── ISSUE_TEMPLATE/           — Operating layer: Research, Source Reliability, Correction, Changelog forms
+│   ├── workflows/                 — QA gate enforcement, changelog automation, project sync, review reminders, releases, validation, AI-assisted drafting
+│   ├── labels.yml, dependabot.yml, CODEOWNERS, PULL_REQUEST_TEMPLATE.md, SECURITY.md, SUPPORT.md
 ├── CONTRIBUTING.md
 ├── LICENSE
 └── CHANGELOG.md
 ```
 
-## The two databases
+Every file under `rules/`, `frameworks/`, `playbooks/`, `checklists/`, `tools/`, `sources/`, `research/`, `examples/`, and `prompts/` is a **knowledge object**: YAML frontmatter (id, type, status, version, tags, `related` graph edges, an embedding-ready `summary`) plus a body under ~800 words. See [ARCHITECTURE.md §3](ARCHITECTURE.md#3-knowledge-objects) for the full schema per type.
 
-This repository doesn't bolt on an external database — GitHub's own primitives *are* the database:
+## The two live databases
+
+GitHub Issues + Projects are the *operating* layer — where research happens live, before it graduates into the static knowledge layer above:
 
 - **Research Database** → every `type:research` Issue (via the **Research Entry** form), surfaced on a GitHub Projects (v2) board with custom fields (Evidence Tier, Publication Status, the six EV components). One row per story evaluated, including WAIT outcomes.
-- **Source Reliability Database** → every `type:source` Issue (via the **Source Reliability Record** form), on its own Project board, tracking a source's track record instead of treating "trusted" as a permanent label.
-- **Changelog** → `type:changelog` Issues — auto-opened whenever `docs/` changes on `main`, or opened manually via the **Changelog Entry** form for changes that don't touch `docs/` directly (e.g. a Project board schema change).
+- **Source Reliability Database** → every `type:source` Issue (via the **Source Reliability Record** form), tracking a source's track record over time — the live counterpart to `/sources/`.
+- **Changelog** → `type:changelog` Issues — auto-opened whenever `rules/`, `frameworks/`, `playbooks/`, or `checklists/` changes on `main`, or opened manually via the **Changelog Entry** form for anything else worth recording.
 - **Corrections** → `type:correction` Issues, linked back to the original research entry.
-
-Every one of these is a native GitHub object: an Issue, a label, a Project field. Nothing here requires exporting to, or importing from, anything else.
 
 ## Daily use
 
 1. Open a new **Research Entry** issue (Issues → New Issue).
-2. Work the phases in [Daily Workflow](docs/10-daily-workflow.md) — each maps to a field on the form.
+2. Work the phases in [Daily Workflow](/playbooks/PLAYBOOK-0002-daily-workflow.md) — each maps to a field on the form.
 3. Tick the 10 QA Gate checkboxes as you satisfy them.
 4. Apply the `status:PASS` (or `status:PASS-WITH-LIMITATIONS`) label. **QA Gate Enforcement** will bounce it back if the boxes aren't all checked.
 5. Publish. Come back later and fill in **Outcome** — or let the weekly review reminder nudge you.
 
-## Why GitHub-native
+## AI integration prototype
 
-Everything the framework needs — history, enforcement, review, versioning, access control — is a first-class GitHub feature: Issues for records, Projects for views, Actions for enforcement, labels for taxonomy, branch protection and CODEOWNERS for governance, Releases for versioning. Building directly on these primitives means the system of record, the automation that enforces its rules, and the audit trail of how those rules changed all live in one place, under one permission model, with one history. See [SETUP.md](SETUP.md) for exactly how each piece is wired together.
+[`/prototype/`](prototype/) is a working, minimal RAG pipeline validating this architecture end-to-end (loader → chunker/indexer → retriever → LLM) against the real knowledge objects above — see [`prototype/README.md`](prototype/README.md) for how to run it and what it found. This is a reference implementation, not part of the knowledge taxonomy itself.
+
+## Why AI-first, GitHub-native
+
+Every fact the framework relies on — a rule, a reasoning model, a procedure, a source's track record — is a single, typed, cross-referenced object with retrieval metadata, so it can be indexed into a vector database, retrieved by an AI agent, or traversed as a knowledge graph without the repository's structure changing at all. GitHub's own primitives (Issues, Projects, Actions, labels, branch protection) remain the live operating layer on top. See [ARCHITECTURE.md](ARCHITECTURE.md) for exactly how each piece is designed to support both a human contributor today and a retrieval-augmented AI agent tomorrow.

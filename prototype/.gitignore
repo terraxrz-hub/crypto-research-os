@@ -1,0 +1,3 @@
+# index/ is fully regenerable via `python3 indexer.py .. index` — not
+# committed in a real deployment, kept here in the delivered bundle only
+# as evidence of a real run against the actual repository content.

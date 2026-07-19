@@ -1,0 +1,3 @@
+# Only external dependency in the whole prototype — everything else
+# (indexing, TF-IDF, retrieval, the Anthropic API call) is Python stdlib.
+pyyaml>=6.0

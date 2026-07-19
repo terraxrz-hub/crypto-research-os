@@ -1,0 +1,215 @@
+SYSTEM PROMPT (fixed, sent with every query):
+
+You are the retrieval assistant for the Crypto Research OS knowledge base.
+
+Answer ONLY using the knowledge objects provided in the context below. Every claim you make must be traceable to one of them — cite the object id in square brackets after each claim, e.g. [RULE-003].
+
+If the provided context does not fully answer the question, say so explicitly rather than filling the gap from general knowledge — this mirrors the framework's own WAIT principle [RULE-003]: an incomplete but honest answer beats a confident but unsupported one.
+
+Be concise. Do not repeat the full text of an object; synthesize.
+
+##############################################################################
+USER QUERY: What does the QA gate require before a story can PASS?
+
+RETRIEVER — direct matches:
+  [0.442] PLAYBOOK-0002 (PLAYBOOK-0002::section::phase-6-qa-gate)
+  [0.377] CHECKLIST-001 (CHECKLIST-001::summary)
+  [0.356] FRAMEWORK-004 (FRAMEWORK-004::section::checklist-before-drafting)
+  [0.341] PROMPT-0007 (PROMPT-0007::section::final-qa)
+  [0.307] EXAMPLE-00001 (EXAMPLE-00001::section::qa-gate-check-selected)
+RETRIEVER — graph-expanded context:
+  FRAMEWORK-003 — related to PLAYBOOK-0002 (matched "What does the QA gate require before a s...")
+  RULE-002 — related to PLAYBOOK-0002 (matched "What does the QA gate require before a s...")
+  FRAMEWORK-001 — related to PLAYBOOK-0002 (matched "What does the QA gate require before a s...")
+  PLAYBOOK-0001 — related to PLAYBOOK-0002 (matched "What does the QA gate require before a s...")
+  RULE-003 — related to CHECKLIST-001 (matched "What does the QA gate require before a s...")
+
+--- Assembled context (what gets sent to the LLM) ---
+## Directly matched objects
+
+### [PLAYBOOK-0002] Daily Workflow (type: playbook, path: /playbooks/PLAYBOOK-0002-daily-workflow.md)
+Matched excerpt: ## Phase 6 — QA Gate
+
+Run the ten questions in [QA Gate](/checklists/CHECKLIST-001-qa-gate.md). Any "No" → revise or set status to WAIT.
+Summary: The six-phase day-to-day sequence, mirrored field-for-field by the research-entry GitHub Issue Form: market scan and ranking, verification, mechanism explanation, drafting, visual assets, and the QA Gate.
+
+### [CHECKLIST-001] QA Gate (type: checklist, path: /checklists/CHECKLIST-001-qa-gate.md)
+Matched excerpt: The canonical ten-question gate every piece of content passes before publication. All ten must be "Yes" (all ten checkboxes ticked in the research-entry Issue Form) before a status:PASS or status:PASS-WITH-LIMITATIONS label survives — the QA Gate Enforcement GitHub Action strips the label otherwise.
+Summary: The canonical ten-question gate every piece of content passes before publication. All ten must be "Yes" (all ten checkboxes ticked in the research-entry Issue Form) before a status:PASS or status:PASS-WITH-LIMITATIONS label survives — the QA Gate Enforcement GitHub Action strips the...
+[truncated for display]
+
+--- Response (extractive-fallback) ---
+[No ANTHROPIC_API_KEY set — showing extractive results instead of a generated answer for: "What does the QA gate require before a story can PASS?"]
+
+[PLAYBOOK-0002] Daily Workflow — ## Phase 6 — QA Gate
+
+Run the ten questions in [QA Gate](/checklists/CHECKLIST-001-qa-gate.md). Any "No" → revise or set status to WAIT.
+[CHECKLIST-001] QA Gate — The canonical ten-question gate every piece of content passes before publication. All ten must be "Yes" (all ten checkboxes ticked in the research-entry Issue Form) before a status:PASS or status:PASS-WITH-LIMITATIONS label survives — the QA Gate Enforcement GitHub Action strips the label otherwise.
+[FRAMEWORK-004] Writing & Mechanism Framework — ## Checklist before drafting
+
+- [ ] Do I know the mechanism, not just the headline?
+- [ ] Does my language match my evidence tier?
+- [ ] Have I separated fact from analysis?
+- [ ] Is uncertainty visible, not smoothed over?
+
+This page feeds directly into [QA Gate](/checklists/CHECKLIST-001-qa-gate.md) question 5 ("does the content explain the mechanism before the conclusion?") and question 6 ("would I still stand behind every sentence six months from now?").
+[PROMPT-0007] Final QA — # Final QA
+
+**Purpose:** last check before publishing.
+
+> Run the full [QA Gate](/checklists/CHECKLIST-001-qa-gate.md). Answer all ten questions. State PASS / PASS WITH LIMITATIONS / WAIT. Mention every remaining limitation.
+[EXAMPLE-00001] Worked Example: Applying the Weakest-Link Rule — ## QA Gate check (selected)
+
+- Question 4 ("does every conclusion remain proportional to the available evidence?") — Yes, because the reason is explicitly hedged rather than stated flatly.
+- Question 1 ("is every factual claim independently verified?") — No for the stated reason specifically — this is exactly why the status is PASS WITH LIMITATIONS rather than PASS, not a reason to answer "No" for the whole entry.
+
+See the full ten questions in [QA Gate](/checklists/CHECKLIST-001-qa-gate.md).
+
+##############################################################################
+USER QUERY: How do I classify evidence that comes from a single trusted analytics platform?
+
+RETRIEVER — direct matches:
+  [0.288] FRAMEWORK-004 (FRAMEWORK-004::section::checklist-before-drafting)
+  [0.280] FRAMEWORK-002 (FRAMEWORK-002::section::primary-vs-trusted-intermediary-verification)
+  [0.195] OBJECTIVE (OBJECTIVE::section::core-principles)
+  [0.162] FRAMEWORK-003 (FRAMEWORK-003::section::the-six-evaluation-criteria)
+  [0.159] FRAMEWORK-001 (FRAMEWORK-001::section::resolved-ambiguous-cases)
+RETRIEVER — graph-expanded context:
+  RULE-003 — related to FRAMEWORK-004 (matched "How do I classify evidence that comes fr...")
+  CHECKLIST-001 — related to FRAMEWORK-004 (matched "How do I classify evidence that comes fr...")
+  RULE-001 — related to FRAMEWORK-002 (matched "How do I classify evidence that comes fr...")
+  GLOSSARY — related to FRAMEWORK-003 (matched "How do I classify evidence that comes fr...")
+  PLAYBOOK-0002 — related to FRAMEWORK-003 (matched "How do I classify evidence that comes fr...")
+  PLAYBOOK-0001 — related to FRAMEWORK-003 (matched "How do I classify evidence that comes fr...")
+  RULE-002 — related to FRAMEWORK-001 (matched "How do I classify evidence that comes fr...")
+
+--- Assembled context (what gets sent to the LLM) ---
+## Directly matched objects
+
+### [FRAMEWORK-004] Writing & Mechanism Framework (type: framework, path: /frameworks/FRAMEWORK-004-writing-and-mechanism.md)
+Matched excerpt: ## Checklist before drafting
+
+- [ ] Do I know the mechanism, not just the headline?
+- [ ] Does my language match my evidence tier?
+- [ ] Have I separated fact from analysis?
+- [ ] Is uncertainty visible, not smoothed over?
+
+This page feeds directly into [QA Gate](/checklists/CHECKLIST-001-qa-gate.md) question 5 ("does the content explain the mechanism before the conclusion?") and question 6 ("would I still stand behind every sentence six months from now?").
+Summary: The governing principle — confidence in the writing must match confidence in the evidence — and its four consequences (mechanism before conclusion, facts before analysis, preserve uncertainty, no hype), plus the standalone-tweet-by-default format rule.
+
+### [FRAMEWORK-002] On-Chain Verification Framework (type: framework, path: /frameworks/FRAMEWORK-002-onchain-verification.md)
+Matched excerpt: ## Primary vs. trusted intermediary verification
+
+- **Primary verification** — you personally verified the transaction on-chain via the explorer. (Tier 1)
+- **...
+[truncated for display]
+
+--- Response (extractive-fallback) ---
+[No ANTHROPIC_API_KEY set — showing extractive results instead of a generated answer for: "How do I classify evidence that comes from a single trusted analytics platform?"]
+
+[FRAMEWORK-004] Writing & Mechanism Framework — ## Checklist before drafting
+
+- [ ] Do I know the mechanism, not just the headline?
+- [ ] Does my language match my evidence tier?
+- [ ] Have I separated fact from analysis?
+- [ ] Is uncertainty visible, not smoothed over?
+
+This page feeds directly into [QA Gate](/checklists/CHECKLIST-001-qa-gate.md) question 5 ("does the content explain the mechanism before the conclusion?") and question 6 ("would I still stand behind every sentence six months from now?").
+[FRAMEWORK-002] On-Chain Verification Framework — ## Primary vs. trusted intermediary verification
+
+- **Primary verification** — you personally verified the transaction on-chain via the explorer. (Tier 1)
+- **Trusted intermediary verification** — the information comes from a reputable analytics platform (Arkham, Lookonchain, Glassnode, CryptoQuant, Nansen, SoSoValue). Valuable and often reliable, but not the same as direct on-chain verification. (Tier 3 — see [Evidence Framework](/frameworks/FRAMEWORK-001-evidence-tier-framework.md))
+[OBJECTIVE] Objective — ## Core Principles
+
+- Decision quality always comes before speed, novelty, or virality.
+- Accurate content that doesn't improve a reader's understanding or decisions is not a success.
+- Engaging content that overstates the evidence is not acceptable.
+- Every conclusion must stay proportional to the available evidence (see [Evidence Framework](/frameworks/FRAMEWORK-001-evidence-tier-framework.md)).
+- When evidence is insufficient, the correct output is **WAIT**, not speculation (see [Publication Standard](/rules/RULE-003-publication-standard.md)).
+[FRAMEWORK-003] Decision Framework — ## The six evaluation criteria
+
+1. **Evidence Strength** — priority order matches [Evidence Framework](/frameworks/FRAMEWORK-001-evidence-tier-framework.md): Primary > Independent Confirmation > Trusted Intermediaries > Corroborated Secondary > Unverified. Weak evidence lowers the score regardless of how interesting the story looks.
+2. **Educational Value** — does it explain a mechanism, correct a misconception, reveal an overlooked fact, or connect separate verified facts? If the reader learns nothing beyond the headline, the score is low.
+3. **Market Impact** — liquidity, regulation, institutional adoption, security, infrastructure, market structure. Large price moves alone don't imply high impact.
+4. **Originality** — how likely is an informed reader to already know this? Repeated stories score lower than unique, evidence-backed insight.
+5. **Shelf Life** — will this matter weeks or months from now? Prefer durable knowledge over temporary headlines.
+6. **Mechanism Quality** — can the underlying mechanism be explained clearly? Stories that teach *why* beat stories that only describe *what*.
+
+No single criterion automatically wins. The objective is maximum overall expected value (EV) across all six.
+[FRAMEWORK-001] Evidence Tier Framework — ## Resolved ambiguous cases
+
+**A source with a good track record, but this specific claim is unverifiable.** Track record never upgrades the tier of an individual claim. It's tracked separately in the Source Reliability Database (`type:source` issues) and may be mentioned as context in the Confidence Level notes, but the Evidence Tier is always assigned by what was verified *this time*.
+
+**A primary document whose authenticity is itself disputed.** Do not classify as Tier 1 until authenticity is confirmed (see the [Primary Document Verification Protocol](/frameworks/FRAMEWORK-002-onchain-verification.md)). Classify as **"Tier 1 — Contested"** or fall back to a **mixed evidence chain**, and say explicitly what's unresolved.
+
+**Two trusted analytics platforms independently reach the same on-chain conclusion via different methods (e.g. Glassnode and CryptoQuant agree).** This is **Tier 2 (Independent Confirmation)**, not Tier 3 — it's structurally identical to two security firms finding the same exploit.
+
+##############################################################################
+USER QUERY: What should I do if a story is breaking news and I can't fully verify it in time?
+
+RETRIEVER — direct matches:
+  [0.368] FRAMEWORK-003 (FRAMEWORK-003::section::time-boxing-escalation-path)
+  [0.325] FRAMEWORK-004 (FRAMEWORK-004::section::checklist-before-drafting)
+  [0.263] PLAYBOOK-0001 (PLAYBOOK-0001::section::time-pressure)
+  [0.182] RULE-003 (RULE-003::section::transparency-rule)
+  [0.156] FRAMEWORK-001 (FRAMEWORK-001::section::resolved-ambiguous-cases)
+RETRIEVER — graph-expanded context:
+  GLOSSARY — related to FRAMEWORK-003 (matched "What should I do if a story is breaking ...")
+  PLAYBOOK-0002 — related to FRAMEWORK-003 (matched "What should I do if a story is breaking ...")
+  CHECKLIST-001 — related to FRAMEWORK-004 (matched "What should I do if a story is breaking ...")
+  RULE-001 — related to PLAYBOOK-0001 (matched "What should I do if a story is breaking ...")
+  OBJECTIVE — related to RULE-003 (matched "What should I do if a story is breaking ...")
+  FRAMEWORK-002 — related to FRAMEWORK-001 (matched "What should I do if a story is breaking ...")
+  RULE-002 — related to FRAMEWORK-001 (matched "What should I do if a story is breaking ...")
+
+--- Assembled context (what gets sent to the LLM) ---
+## Directly matched objects
+
+### [FRAMEWORK-003] Decision Framework (type: framework, path: /frameworks/FRAMEWORK-003-decision-framework.md)
+Matched excerpt: ## Time-boxing / escalation path
+
+For genuinely time-sensitive breaking news where full primary verification isn't feasible inside the relevant window:
+
+- State explicitly that this is a time-boxed assessment, not a fully verified one.
+- Publish only at **PASS WITH LIMITATIONS**, with the time constraint stated as the limitation — never at PASS.
+- If even a time-boxed limited assessment can't clear the bar, the answer is still **WAIT**. There is no third option between "verify fully" and "WAIT" — a rushed PASS is never acceptable.
+Summary: The six weighted criteria used to rank candidate stories by expected value, the mandatory re-ranking trigger when new evidence weakens confidence, the WAIT rule (publish nothing beats publishing something misleading), and the time-boxing/escalation path for breaking news.
+
+### [FRAMEWORK-004] Writing & Mechanism Framework (type: framework, path: /frameworks/FRAMEWORK-004-writing-and-mechanism.md)
+Matched excerpt: ## Checklist before drafting
+
+- [ ] Do I know the mechanism, not just the headl...
+[truncated for display]
+
+--- Response (extractive-fallback) ---
+[No ANTHROPIC_API_KEY set — showing extractive results instead of a generated answer for: "What should I do if a story is breaking news and I can't fully verify it in time?"]
+
+[FRAMEWORK-003] Decision Framework — ## Time-boxing / escalation path
+
+For genuinely time-sensitive breaking news where full primary verification isn't feasible inside the relevant window:
+
+- State explicitly that this is a time-boxed assessment, not a fully verified one.
+- Publish only at **PASS WITH LIMITATIONS**, with the time constraint stated as the limitation — never at PASS.
+- If even a time-boxed limited assessment can't clear the bar, the answer is still **WAIT**. There is no third option between "verify fully" and "WAIT" — a rushed PASS is never acceptable.
+[FRAMEWORK-004] Writing & Mechanism Framework — ## Checklist before drafting
+
+- [ ] Do I know the mechanism, not just the headline?
+- [ ] Does my language match my evidence tier?
+- [ ] Have I separated fact from analysis?
+- [ ] Is uncertainty visible, not smoothed over?
+
+This page feeds directly into [QA Gate](/checklists/CHECKLIST-001-qa-gate.md) question 5 ("does the content explain the mechanism before the conclusion?") and question 6 ("would I still stand behind every sentence six months from now?").
+[PLAYBOOK-0001] Research Workflow — ## Time pressure
+
+If a story is breaking and full primary verification isn't feasible in the relevant window, follow the [time-boxing / escalation path](/frameworks/FRAMEWORK-003-decision-framework.md#time-boxing--escalation-path) — don't let verification loop indefinitely between "verify further" and "re-rank" with no forcing function. Set an explicit time-box; if the bar isn't cleared by then, the answer is WAIT, or PASS WITH LIMITATIONS with the time constraint stated as the limitation.
+[RULE-003] Publication Standard — ## Transparency Rule
+
+Never hide verification gaps. Always state what was verified, what couldn't be, and why confidence is limited. Readers should know exactly where certainty ends.
+[FRAMEWORK-001] Evidence Tier Framework — ## Resolved ambiguous cases
+
+**A source with a good track record, but this specific claim is unverifiable.** Track record never upgrades the tier of an individual claim. It's tracked separately in the Source Reliability Database (`type:source` issues) and may be mentioned as context in the Confidence Level notes, but the Evidence Tier is always assigned by what was verified *this time*.
+
+**A primary document whose authenticity is itself disputed.** Do not classify as Tier 1 until authenticity is confirmed (see the [Primary Document Verification Protocol](/frameworks/FRAMEWORK-002-onchain-verification.md)). Classify as **"Tier 1 — Contested"** or fall back to a **mixed evidence chain**, and say explicitly what's unresolved.
+
+**Two trusted analytics platforms independently reach the same on-chain conclusion via different methods (e.g. Glassnode and CryptoQuant agree).** This is **Tier 2 (Independent Confirmation)**, not Tier 3 — it's structurally identical to two security firms finding the same exploit.
+

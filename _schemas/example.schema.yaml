@@ -1,0 +1,15 @@
+# Extends _common.schema.yaml. An Example is a worked, illustrative
+# application of a Rule/Framework/Playbook — see /examples/README.md.
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "example.schema.yaml"
+allOf:
+  - $ref: "_common.schema.yaml"
+  - type: object
+    required: [illustrates]
+    properties:
+      illustrates:
+        type: array
+        items: { type: string }
+        description: "ids of the Rule(s)/Framework(s)/Playbook(s) this example demonstrates."
+      outcome:
+        type: string

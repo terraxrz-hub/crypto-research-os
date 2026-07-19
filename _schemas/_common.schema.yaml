@@ -1,0 +1,63 @@
+# Common frontmatter contract shared by every knowledge object in this
+# repository. Type-specific schemas (rule.schema.yaml, framework.schema.yaml,
+# etc.) extend this with additional required/optional fields — they don't
+# repeat these. See /ARCHITECTURE.md §3 for the reasoning behind each field.
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "common.schema.yaml"
+type: object
+required: [id, type, title, status, version, tags, summary, source_of_truth]
+properties:
+  id:
+    type: string
+    description: >
+      Stable, permanent identifier. Never reused, never renumbered.
+      Format: "<TYPE>-<zero-padded-number>", e.g. "RULE-003", "SOURCE-000042".
+      This is the primary key every relationship field and every vector-DB
+      metadata filter refers to — filenames may be renamed, ids may not.
+  type:
+    type: string
+    enum: [rule, framework, playbook, tool, source, research, example, checklist, prompt, reference, meta]
+  title:
+    type: string
+  status:
+    type: string
+    enum: [draft, active, deprecated, superseded]
+  version:
+    type: integer
+    minimum: 1
+    description: "Increments on any meaningful content change. Not the repository/release version."
+  created:
+    type: string
+    format: date
+  updated:
+    type: string
+    format: date
+  supersedes:
+    type: [string, "null"]
+    description: "id of the object this one replaces, if any."
+  superseded_by:
+    type: [string, "null"]
+    description: "id of the object that replaces this one, if any. Set instead of deleting."
+  tags:
+    type: array
+    items: { type: string }
+    description: "Controlled-vocabulary metadata filters — see /ARCHITECTURE.md §2 for the tag governance rule."
+  related:
+    type: array
+    items: { type: string }
+    description: "ids of related objects — the edges of the knowledge graph. Not a substitute for typed relationship fields (depends_on, enforced_by, etc.) where a type-specific schema defines them."
+  summary:
+    type: string
+    maxLength: 500
+    description: >
+      The single embedding-ready chunk for this object — 1-3 sentences, no
+      markdown, self-contained (must make sense with zero other context).
+      This is what a vector DB embeds as the primary retrieval unit; the
+      full body is retrieved only after this chunk (or a body sub-chunk)
+      matches. See /ARCHITECTURE.md §2 (chunk boundaries).
+  source_of_truth:
+    type: boolean
+    description: >
+      true only for the single object that canonically owns a concept.
+      Every other object referencing that concept must link to it, not
+      restate it — see /CONTRIBUTING.md.

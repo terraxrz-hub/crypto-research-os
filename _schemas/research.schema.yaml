@@ -1,0 +1,36 @@
+# Extends _common.schema.yaml. A Research object is a graduated, finalized
+# Research Entry — see /research/README.md.
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "research.schema.yaml"
+allOf:
+  - $ref: "_common.schema.yaml"
+  - type: object
+    required: [topic, evidence_tier, publication_status, decision_scores, origin_issue]
+    properties:
+      topic: { type: string }
+      evidence_tier: { type: integer, minimum: 1, maximum: 7 }
+      publication_status:
+        type: string
+        enum: ["WAIT", "PASS-WITH-LIMITATIONS", "PASS"]
+      decision_scores:
+        type: object
+        description: "The six Decision Framework criteria, 1-10 each."
+        properties:
+          evidence_strength: { type: integer }
+          educational_value: { type: integer }
+          market_impact: { type: integer }
+          originality: { type: integer }
+          shelf_life: { type: integer }
+          mechanism_quality: { type: integer }
+      outcome:
+        type: [string, "null"]
+        description: "Filled in on re-review per the re-review trigger in RULE-003."
+      origin_issue:
+        type: string
+        description: "URL of the GitHub Issue this object graduated from."
+      sources_cited:
+        type: array
+        items: { type: string }
+      tools_used:
+        type: array
+        items: { type: string }

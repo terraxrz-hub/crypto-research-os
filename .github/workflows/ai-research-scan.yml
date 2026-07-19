@@ -1,7 +1,7 @@
 name: AI-Assisted Research Scaffold (optional)
 
 # Drafts a SCAFFOLD Research Entry issue from a topic — Phase 1
-# (Market Scan & Story Selection) of docs/10-daily-workflow.md only. It
+# (Market Scan & Story Selection) of /playbooks/PLAYBOOK-0002-daily-workflow.md only. It
 # does not perform verification, does not classify evidence tiers, and
 # cannot satisfy the QA Gate on its own. Every field it fills is marked
 # [ai-drafted, unverified] and the issue is labeled "ai-assisted" so it
@@ -96,8 +96,8 @@ jobs:
               draft,
               "",
               "---",
-              "This is Phase 1 (Market Scan & Story Selection) only, per [Daily Workflow](../../blob/main/docs/10-daily-workflow.md). ",
-              "Complete Phases 2-6 and the [QA Gate](../../blob/main/docs/08-qa-gate.md) manually before applying any `status:PASS*` label — ",
+              "This is Phase 1 (Market Scan & Story Selection) only, per [Daily Workflow](../../blob/main//playbooks/PLAYBOOK-0002-daily-workflow.md). ",
+              "Complete Phases 2-6 and the [QA Gate](../../blob/main//checklists/CHECKLIST-001-qa-gate.md) manually before applying any `status:PASS*` label — ",
               "QA Gate Enforcement will not accept an unverified draft regardless of this label.",
             ].join("\n");
 

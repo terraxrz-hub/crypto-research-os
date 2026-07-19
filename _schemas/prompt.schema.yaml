@@ -1,0 +1,18 @@
+# Extends _common.schema.yaml. A Prompt is a thin, reusable trigger for one
+# Playbook phase — see /prompts/README.md.
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "prompt.schema.yaml"
+allOf:
+  - $ref: "_common.schema.yaml"
+  - type: object
+    required: [used_in_phase]
+    properties:
+      used_in_phase:
+        type: string
+        description: "Which named Playbook phase invokes this prompt."
+      input_variables:
+        type: array
+        items: { type: string }
+      output_format:
+        type: string
+        enum: [text, structured, checklist]

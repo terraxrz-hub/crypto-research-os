@@ -75,7 +75,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                body: `⚠️ **QA Gate not satisfied.** \`${appliedLabel}\` was removed automatically.\n\n${done}/${total || EXPECTED} checkboxes are ticked in the QA Gate section. Per [QA Gate](../../blob/main/docs/08-qa-gate.md), all ${EXPECTED} questions must be answered Yes before a PASS status can be applied. Tick the remaining boxes and re-apply the label.`,
+                body: `⚠️ **QA Gate not satisfied.** \`${appliedLabel}\` was removed automatically.\n\n${done}/${total || EXPECTED} checkboxes are ticked in the QA Gate section. Per [QA Gate](../../blob/main//checklists/CHECKLIST-001-qa-gate.md), all ${EXPECTED} questions must be answered Yes before a PASS status can be applied. Tick the remaining boxes and re-apply the label.`,
               });
             } else {
               try {

@@ -34,6 +34,6 @@ body:
     id: correction-text
     attributes:
       label: Correction text (as published)
-      description: "The actual correction wording, following docs/03-writing-and-mechanism.md standards."
+      description: "The actual correction wording, following /frameworks/FRAMEWORK-004-writing-and-mechanism.md standards."
     validations:
       required: true

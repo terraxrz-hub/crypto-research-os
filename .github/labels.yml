@@ -6,7 +6,7 @@
   description: "A Source Reliability Database entry"
 - name: "type:changelog"
   color: "5319E7"
-  description: "A framework rule change, auto-opened when docs/ changes on main"
+  description: "A framework rule change, auto-opened when the knowledge layer changes on main"
 - name: "type:correction"
   color: "B60205"
   description: "A correction to already-published content"

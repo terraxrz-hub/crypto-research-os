@@ -1,12 +1,12 @@
 name: "Changelog Entry (manual)"
-description: "Record a framework change that doesn't touch docs/ directly — a Projects board schema change, a workflow permission change, a labels.yml update, etc. Changes to docs/ get this automatically; use this form only when that trigger doesn't fire."
+description: "Record a framework change that doesn't touch the knowledge layer (rules/, frameworks/, playbooks/, checklists/) directly — a Projects board schema change, a workflow permission change, a labels.yml update, etc. Changes to those folders get this automatically; use this form only when that trigger doesn't fire."
 title: "[Changelog] "
 labels: ["type:changelog"]
 body:
   - type: markdown
     attributes:
       value: |
-        Changes to `docs/**` on `main` auto-open a changelog issue via the **Changelog Automation** workflow — don't duplicate one here for those. Use this form for anything else worth recording: Project board field changes, workflow/permission changes, label taxonomy changes, or repository configuration changes.
+        Changes to `rules/`, `frameworks/`, `playbooks/`, or `checklists/` on `main` auto-open a changelog issue via the **Changelog Automation** workflow — don't duplicate one here for those. Use this form for anything else worth recording: Project board field changes, workflow/permission changes, label taxonomy changes, or repository configuration changes.
 
   - type: input
     id: version

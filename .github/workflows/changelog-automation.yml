@@ -5,7 +5,10 @@ on:
     branches:
       - main
     paths:
-      - "docs/**"
+      - "rules/**"
+      - "frameworks/**"
+      - "playbooks/**"
+      - "checklists/**"
 
 permissions:
   contents: read
@@ -25,14 +28,14 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Get changed documentation files
+      - name: Get changed knowledge-object files
         id: diff
         shell: bash
         run: |
           if git rev-parse HEAD~1 >/dev/null 2>&1; then
-            FILES=$(git diff --name-only HEAD~1 HEAD -- docs/)
+            FILES=$(git diff --name-only HEAD~1 HEAD -- rules/ frameworks/ playbooks/ checklists/)
           else
-            FILES=$(git ls-files docs/)
+            FILES=$(git ls-files rules/ frameworks/ playbooks/ checklists/)
           fi
 
           echo "FILES<<EOF" >> $GITHUB_ENV
@@ -54,7 +57,7 @@ jobs:
                   .filter(Boolean)
                   .map(f => `- \`${f}\``)
                   .join("\n")
-              : "- No documentation files detected.";
+              : "- No knowledge-object files detected.";
 
             const body = [
               "**Version:** (fill in — e.g. v2.1)",
@@ -78,7 +81,7 @@ jobs:
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `[Changelog] docs change — ${sha}`,
+              title: `[Changelog] knowledge-object change — ${sha}`,
               labels: ["type:changelog"],
               body
             });

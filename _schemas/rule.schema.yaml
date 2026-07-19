@@ -1,0 +1,22 @@
+# Extends _common.schema.yaml. A Rule is an atomic, boolean-checkable
+# constraint — see /rules/README.md.
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "rule.schema.yaml"
+allOf:
+  - $ref: "_common.schema.yaml"
+  - type: object
+    required: [statement, applies_to]
+    properties:
+      statement:
+        type: string
+        description: "The rule in one sentence, worded so it's checkable as true/false."
+      enforced_by:
+        type: array
+        items: { type: string }
+        description: "Filenames of GitHub Actions that mechanically enforce this rule, if any. Empty array if enforcement is currently human-only."
+      applies_to:
+        type: array
+        items:
+          type: string
+          enum: [research, playbook, tool, source]
+        description: "Which object types this constraint governs."

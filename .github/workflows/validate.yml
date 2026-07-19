@@ -6,21 +6,15 @@ name: Validate
 # repository variables left unset or on placeholder values.
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "docs/**"
-      - ".github/**"
-      - "*.md"
-
   pull_request:
     paths:
-      - "docs/**"
+      - "rules/**"
+      - "frameworks/**"
+      - "playbooks/**"
+      - "checklists/**"
       - ".github/**"
       - "*.md"
-
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 permissions:
   contents: read

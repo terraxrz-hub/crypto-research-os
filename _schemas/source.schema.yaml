@@ -1,0 +1,29 @@
+# Extends _common.schema.yaml. A Source is a named, evidence-originating
+# entity tracked for reliability over time — see /sources/README.md.
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "source.schema.yaml"
+allOf:
+  - $ref: "_common.schema.yaml"
+  - type: object
+    required: [outlet, source_type, default_tier, last_reviewed]
+    properties:
+      outlet: { type: string }
+      source_type:
+        type: string
+        enum: [primary, independent-technical, trusted-intermediary, media, social, anonymous]
+      default_tier:
+        type: integer
+        minimum: 1
+        maximum: 7
+      tool_ref:
+        type: [string, "null"]
+        description: "id of the corresponding Tool object, if this source is also a queryable platform."
+      last_reviewed: { type: string, format: date }
+      track_record:
+        type: array
+        items:
+          type: object
+          properties:
+            date: { type: string, format: date }
+            event: { type: string }
+            outcome: { type: string }

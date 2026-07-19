@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        V1 treated "trusted" as a permanent, unexamined label. This tracks it instead. Track record here is *context*, not a way to upgrade a claim's Evidence Tier — see the resolved ambiguous cases in docs/02-evidence-framework.md.
+        V1 treated "trusted" as a permanent, unexamined label. This tracks it instead. Track record here is *context*, not a way to upgrade a claim's Evidence Tier — see the resolved ambiguous cases in /frameworks/FRAMEWORK-001-evidence-tier-framework.md.
 
   - type: input
     id: source-name
@@ -19,7 +19,7 @@ body:
   - type: dropdown
     id: source-tier
     attributes:
-      label: Default tier (docs/02-evidence-framework.md source table)
+      label: Default tier (/frameworks/FRAMEWORK-001-evidence-tier-framework.md source table)
       options:
         - "Tier 1 — Primary / original record"
         - "Tier 2 — Independent technical auditor"

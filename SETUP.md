@@ -6,25 +6,25 @@ This is the one-time setup for turning this repository into a running instance o
 
 | Design decision | What it solves |
 |---|---|
-| Four layers: Philosophy/Standards (`docs/`), Operating layer (Issues + Projects), Tooling (`prompts/`), Dashboard (`README.md`) | A new reader (or future-you) can tell what's foundational vs. operational vs. reference at a glance. |
-| One resolved, ordered evidence-tier table, owned by `docs/02-evidence-framework.md` | A single unambiguous answer for any evidence question — e.g. whether a named analytics platform outranks ten outlets repeating one unnamed source — instead of several pages independently defining overlapping taxonomies that can drift apart. |
+| Nine knowledge-object types across the Philosophy/Standards layer (`rules/`, `frameworks/`, `playbooks/`, `checklists/`), Reference layer (`tools/`, `sources/`, `research/`, `examples/`), Tooling (`prompts/`), Operating layer (Issues + Projects) | A new reader (or future-you) can tell what's foundational vs. operational vs. reference at a glance. |
+| One resolved, ordered evidence-tier table, owned by `/frameworks/FRAMEWORK-001-evidence-tier-framework.md` | A single unambiguous answer for any evidence question — e.g. whether a named analytics platform outranks ten outlets repeating one unnamed source — instead of several pages independently defining overlapping taxonomies that can drift apart. |
 | One canonical page per rule; every other page link-references it instead of restating it | Rule changes get made once, not hand-copied into several places every time — this removes the root cause of documentation drift rather than just tidying it up after the fact. |
-| `docs/03-writing-and-mechanism.md` states the governing principle explicitly, with everything else as a named consequence of it | The most externally visible part of the system — the actual writing — has an owned, explicit definition instead of an inferred shadow. |
-| `prompts/prompt-library.md` is a single deduplicated set, one prompt per workflow step | One file to update when a prompt changes; no overlapping near-duplicate prompt sets to keep in sync. |
+| `/frameworks/FRAMEWORK-004-writing-and-mechanism.md` states the governing principle explicitly, with everything else as a named consequence of it | The most externally visible part of the system — the actual writing — has an owned, explicit definition instead of an inferred shadow. |
+| `/prompts/README.md` is a single deduplicated set, one prompt per workflow step | One file to update when a prompt changes; no overlapping near-duplicate prompt sets to keep in sync. |
 | The `research-entry` Issue Form is the daily interface, not a disposable draft | Nothing gets thrown away; every entry — including WAIT outcomes — becomes a queryable, permanent row in the Research Database. |
 | Every entry has an `Outcome` field and a scheduled review reminder | Report #500 can learn from report #1, and a stated limitation can't quietly age out of anyone's attention. |
 | `type:correction` Issue Form, linked back to the original entry | A defined, auditable process for correcting the record — not an undefined, ad hoc one. |
 | `type:source` Issue Form = Source Reliability Database, one row per named source | Track record is tracked over time, not assumed and frozen the first time a source turns out to be right. |
-| GitHub Action auto-opens a `type:changelog` issue whenever `docs/` changes on `main` | Rule changes can't happen silently — capturing the reason for a change is structurally enforced, not just requested. |
+| GitHub Action auto-opens a `type:changelog` issue whenever the knowledge layer (`rules/`, `frameworks/`, `playbooks/`, `checklists/`) changes on `main` | Rule changes can't happen silently — capturing the reason for a change is structurally enforced, not just requested. |
 | GitHub Action strips a `status:PASS` label if not all 10 QA checkboxes are ticked | Turns "please check these boxes" into "you cannot mislabel this as PASS." |
-| Explicit time-boxing/escalation section in `docs/06-decision-framework.md` | Breaking news doesn't force a binary choice between "verify fully" or WAIT with no defined middle ground. |
-| `docs/10-daily-workflow.md` Phase 1 names the six Decision Framework criteria explicitly | Story selection is never under-specified at the exact moment it happens. |
+| Explicit time-boxing/escalation section in `/frameworks/FRAMEWORK-003-decision-framework.md` | Breaking news doesn't force a binary choice between "verify fully" or WAIT with no defined middle ground. |
+| `/playbooks/PLAYBOOK-0002-daily-workflow.md` Phase 1 names the six Decision Framework criteria explicitly | Story selection is never under-specified at the exact moment it happens. |
 
 ## 2. First-time setup
 
 1. **Enable labels.** The **Label Sync** workflow runs automatically on any push that touches `.github/labels.yml` — or trigger it manually from the Actions tab (`workflow_dispatch`).
 2. **Create two Projects (v2) boards** — board configuration isn't file-based, so this step is manual:
-   - **Research Database**: your account or org → Projects → New project → Board or Table view. Add fields: `Evidence Tier` (single select, matching the 7 tiers in `docs/02-evidence-framework.md`), `Publication Status` (single select: WAIT / PASS WITH LIMITATIONS / PASS), `Evidence Strength`, `Educational Value`, `Market Impact`, `Originality`, `Shelf Life`, `Mechanism Quality` (all number, 1–10, matching the Decision Framework's six criteria), `Outcome` (text).
+   - **Research Database**: your account or org → Projects → New project → Board or Table view. Add fields: `Evidence Tier` (single select, matching the 7 tiers in `/frameworks/FRAMEWORK-001-evidence-tier-framework.md`), `Publication Status` (single select: WAIT / PASS WITH LIMITATIONS / PASS), `Evidence Strength`, `Educational Value`, `Market Impact`, `Originality`, `Shelf Life`, `Mechanism Quality` (all number, 1–10, matching the Decision Framework's six criteria), `Outcome` (text).
    - **Source Reliability Database**: New project → Table view. Add fields: `Default Tier` (single select), `Last Reviewed` (date), `Track Record Summary` (text).
    - Copy each board's URL.
 3. **Set repository variables** (Settings → Secrets and variables → Actions → Variables) rather than editing workflow files directly:
