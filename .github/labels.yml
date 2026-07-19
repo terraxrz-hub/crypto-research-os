@@ -1,54 +1,71 @@
 - name: "type:research"
   color: "0E8A16"
-  description: "A Research Database entry (research-entry issue form)"
+  description: "Research database entry"
+
 - name: "type:source"
   color: "1D76DB"
-  description: "A Source Reliability Database entry"
+  description: "Source reliability entry"
+
 - name: "type:changelog"
   color: "5319E7"
-  description: "A framework rule change, auto-opened when the knowledge layer changes on main"
+  description: "Tracks documentation and rule changes"
+
 - name: "type:correction"
   color: "B60205"
-  description: "A correction to already-published content"
+  description: "Correction for published content"
+
 - name: "status:in-progress"
   color: "FBCA04"
-  description: "Research entry still being verified"
+  description: "Research is in progress"
+
 - name: "status:WAIT"
   color: "D93F0B"
   description: "Publication status: WAIT"
+
 - name: "status:PASS-WITH-LIMITATIONS"
   color: "FEF2C0"
-  description: "Publication status: PASS WITH LIMITATIONS"
+  description: "Publication passed with limitations"
+
 - name: "status:PASS"
   color: "0E8A16"
-  description: "Publication status: PASS"
+  description: "Publication approved"
+
 - name: "needs-review"
   color: "C2E0C6"
-  description: "Flagged by the post-publication review reminder workflow"
+  description: "Needs post-publication review"
+
 - name: "qa-gate-blocked"
   color: "E11D21"
-  description: "Auto-applied by QA Gate Enforcement when a PASS label was attempted without all 10 boxes checked"
+  description: "QA Gate requirements not satisfied"
+
 - name: "tier:1-primary"
   color: "006B75"
-  description: "Evidence Tier 1 — Primary Evidence"
+  description: "Evidence Tier 1"
+
 - name: "tier:2-independent-confirmation"
   color: "0E8A16"
-  description: "Evidence Tier 2 — Independent Confirmation"
+  description: "Evidence Tier 2"
+
 - name: "tier:3-trusted-intermediary"
   color: "FBCA04"
-  description: "Evidence Tier 3 — Verified Through Trusted Intermediaries"
+  description: "Evidence Tier 3"
+
 - name: "tier:4-corroborated-secondary"
   color: "D4C5F9"
-  description: "Evidence Tier 4 — Corroborated Secondary Reporting"
+  description: "Evidence Tier 4"
+
 - name: "tier:5-single-source"
   color: "E4E669"
-  description: "Evidence Tier 5 — Single-Source Reporting"
+  description: "Evidence Tier 5"
+
 - name: "tier:6-unverified"
   color: "EDEDED"
-  description: "Evidence Tier 6 — Unverified"
+  description: "Evidence Tier 6"
+
 - name: "tier:7-verified-false"
   color: "000000"
-  description: "Evidence Tier 7 — Verified False"
-- name: ai-assisted
-  color: BFD4F2
-  description: AI-assisted draft awaiting human review.
+  description: "Evidence Tier 7"
+
+- name: "ai-assisted"
+  color: "BFD4F2"
+  description: "AI-assisted draft awaiting human review"
