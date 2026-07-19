@@ -2,20 +2,25 @@ name: QA Gate Enforcement
 
 # Turns the QA Gate from an honor-system checklist into an enforced one.
 # Fires whenever a "status:PASS" or "status:PASS-WITH-LIMITATIONS" label is
-# applied to a research-entry issue. If not all 10 QA checkboxes in the
-# issue body are ticked, the label is removed, a "qa-gate-blocked" label is
-# applied instead, and a comment explains why.
+# applied to a research-entry issue. Counts checkboxes *only within the QA
+# Gate section* of the issue body (between the "QA Gate" field heading and
+# the next field heading) rather than the whole body, so unrelated
+# checkbox-like text elsewhere in the entry (e.g. a pasted list in the
+# verification notes) can't skew the count. If not all 10 are ticked, the
+# label is removed, a "qa-gate-blocked" label is applied instead, and a
+# comment explains why.
 
 on:
   issues:
     types: [labeled]
 
+permissions:
+  issues: write
+
 jobs:
   enforce:
-    if: contains(github.event.label.name, 'status:PASS')
+    if: startsWith(github.event.label.name, 'status:PASS')
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
     steps:
       - uses: actions/github-script@v7
         with:
@@ -23,19 +28,31 @@ jobs:
             const body = context.payload.issue.body || "";
             const appliedLabel = context.payload.label.name;
 
-            // Count checked vs total checkboxes under the QA Gate section.
-            const allBoxes = body.match(/- \[[ xX]\]/g) || [];
-            const checked = body.match(/- \[[xX]\]/g) || [];
+            // Issue Forms render each field as a "### <label>" heading.
+            // Isolate the text between the QA Gate heading and the next
+            // "### " heading (or end of body) so only its checkboxes count.
+            const sectionMatch = body.match(/###\s*QA Gate[\s\S]*?(?=\n###\s|$)/i);
+
+            if (!sectionMatch) {
+              core.warning("Could not locate a '### QA Gate' section in the issue body — falling back to whole-body scan.");
+            }
+
+            const scope = sectionMatch ? sectionMatch[0] : body;
+
+            const allBoxes = scope.match(/-\s\[[ xX]\]/g) || [];
+            const checked = scope.match(/-\s\[[xX]\]/g) || [];
 
             const total = allBoxes.length;
             const done = checked.length;
+            const EXPECTED = 10;
 
-            if (total < 10) {
-              core.warning(`Expected 10 QA checkboxes, found ${total}. Skipping strict enforcement but flagging.`);
+            if (total !== EXPECTED) {
+              core.warning(`Expected ${EXPECTED} QA checkboxes in the QA Gate section, found ${total}. Treating as not satisfied.`);
             }
 
-            if (done < total || total === 0) {
-              // Remove the status label that was just applied.
+            const satisfied = total === EXPECTED && done === EXPECTED;
+
+            if (!satisfied) {
               try {
                 await github.rest.issues.removeLabel({
                   owner: context.repo.owner,
@@ -58,10 +75,9 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                body: `⚠️ **QA Gate not satisfied.** \`${appliedLabel}\` was removed automatically.\n\n${done}/${total} checkboxes are ticked. Per [QA Gate](../../blob/main/docs/08-qa-gate.md), all 10 questions must be answered Yes before a PASS status can be applied. Tick the remaining boxes and re-apply the label.`,
+                body: `⚠️ **QA Gate not satisfied.** \`${appliedLabel}\` was removed automatically.\n\n${done}/${total || EXPECTED} checkboxes are ticked in the QA Gate section. Per [QA Gate](../../blob/main/docs/08-qa-gate.md), all ${EXPECTED} questions must be answered Yes before a PASS status can be applied. Tick the remaining boxes and re-apply the label.`,
               });
             } else {
-              // All boxes checked — remove any stale qa-gate-blocked label.
               try {
                 await github.rest.issues.removeLabel({
                   owner: context.repo.owner,

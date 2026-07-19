@@ -49,3 +49,6 @@
 - name: "tier:7-verified-false"
   color: "000000"
   description: "Evidence Tier 7 — Verified False"
+- name: "ai-assisted"
+  color: "BFD4F2"
+  description: "Drafted (in part) by the AI research-scan workflow — unverified until a human completes the Daily Workflow and QA Gate"

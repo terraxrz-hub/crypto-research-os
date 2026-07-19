@@ -14,6 +14,10 @@ permissions:
 jobs:
   open-changelog-entry:
     runs-on: ubuntu-latest
+    # A commit message containing "[skip-changelog]" (e.g. a typo fix with
+    # no rule-level meaning) skips auto-opening an issue, so the
+    # type:changelog queue stays reserved for changes worth explaining.
+    if: ${{ !contains(github.event.head_commit.message, '[skip-changelog]') }}
 
     steps:
       - name: Checkout repository

@@ -1,0 +1,29 @@
+name: Release
+
+# Tag a version (e.g. `git tag v2.1.0 && git push origin v2.1.0`) and this
+# builds a GitHub Release with auto-generated notes (from merged PRs and
+# closed type:changelog issues since the last tag) plus a link back to the
+# matching CHANGELOG.md entry. Releases are the citable, immutable snapshot
+# of a version; CHANGELOG.md + the type:changelog label are the live,
+# explain-the-reasoning log that feeds them.
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          body: |
+            See [CHANGELOG.md](../../blob/main/CHANGELOG.md) for the full entry, and issues labeled [`type:changelog`](../../issues?q=is%3Aissue+label%3Atype%3Achangelog) for the reasoning behind each change since the previous release.

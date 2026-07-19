@@ -1,0 +1,65 @@
+name: Validate
+
+# Repository-health checks, run on any PR touching config/docs and
+# available on demand. Catches the class of problem the audit found by
+# hand: broken internal doc links, malformed workflow/issue-form YAML, and
+# repository variables left unset or on placeholder values.
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - ".github/**"
+      - "*.md"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  yaml-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install yamllint
+        run: pip install --quiet yamllint
+      - name: Lint workflow and issue-form YAML
+        run: |
+          yamllint -d "{extends: default, rules: {line-length: disable, document-start: disable, truthy: disable}}" \
+            .github/workflows .github/ISSUE_TEMPLATE .github/labels.yml .github/dependabot.yml
+
+  doc-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check internal markdown links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: "yes"
+          config-file: ".github/mlc-config.json"
+
+  setup-configuration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check repository variables aren't unset or placeholder values
+        run: |
+          research_url="${{ vars.RESEARCH_PROJECT_URL }}"
+          source_url="${{ vars.SOURCE_PROJECT_URL }}"
+          fail=0
+
+          check() {
+            name="$1"; value="$2"
+            if [ -z "$value" ]; then
+              echo "::warning::$name is not set. See SETUP.md step 2-3."
+            elif echo "$value" | grep -qiE "OWNER|PROJECT_NUMBER|example\.com|CHANGE_ME"; then
+              echo "::error::$name looks like a placeholder value: $value"
+              fail=1
+            else
+              echo "$name is set."
+            fi
+          }
+
+          check "RESEARCH_PROJECT_URL" "$research_url"
+          check "SOURCE_PROJECT_URL" "$source_url"
+
+          exit $fail

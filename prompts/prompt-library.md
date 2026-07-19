@@ -1,6 +1,6 @@
 # Prompt Library
 
-The old workspace had two pages here (**Prompt Library** and **Prompts**) that were ~85% the same six prompts under different names. Merged into one, deduplicated set. Each prompt is a thin trigger for a standard already defined elsewhere — none of these restate the rules, they just invoke them.
+The single, deduplicated set of prompts for the framework — one per workflow step. Each prompt is a thin trigger for a standard already defined elsewhere in `docs/`; none of these restate the rules, they just invoke them. If you're tempted to add a second prompt that does nearly the same thing as one below, that's a sign the existing prompt needs a parameter, not a sibling.
 
 ## 1. Market Scan
 **Purpose:** find the highest-EV story available right now.

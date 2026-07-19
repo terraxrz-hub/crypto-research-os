@@ -1,0 +1,14 @@
+# Every file requires review from the framework's maintainer(s) by default.
+# Replace @OWNER with the real GitHub username/team before relying on this —
+# see SETUP.md.
+*                       @OWNER
+
+# docs/ defines the framework's actual rules — changes here are the ones
+# most likely to introduce drift if unreviewed, so they're called out
+# explicitly even though the wildcard above already covers them.
+/docs/                  @OWNER
+/CHANGELOG.md           @OWNER
+
+# Workflow and label changes affect enforcement behavior repo-wide.
+/.github/workflows/     @OWNER
+/.github/labels.yml     @OWNER

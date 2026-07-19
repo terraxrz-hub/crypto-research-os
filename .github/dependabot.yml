@@ -1,0 +1,15 @@
+version: 2
+updates:
+  # Keeps the marketplace Actions used across .github/workflows/ current
+  # (actions/checkout, actions/github-script, actions/add-to-project,
+  # EndBug/label-sync, softprops/action-gh-release, etc.) — the framework
+  # has no application dependencies, so this is the only ecosystem that
+  # applies.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "type:changelog"
+    commit-message:
+      prefix: "chore(actions)"

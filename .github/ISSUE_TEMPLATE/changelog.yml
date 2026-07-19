@@ -1,0 +1,49 @@
+name: "Changelog Entry (manual)"
+description: "Record a framework change that doesn't touch docs/ directly — a Projects board schema change, a workflow permission change, a labels.yml update, etc. Changes to docs/ get this automatically; use this form only when that trigger doesn't fire."
+title: "[Changelog] "
+labels: ["type:changelog"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Changes to `docs/**` on `main` auto-open a changelog issue via the **Changelog Automation** workflow — don't duplicate one here for those. Use this form for anything else worth recording: Project board field changes, workflow/permission changes, label taxonomy changes, or repository configuration changes.
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "e.g. v2.1.1"
+    validations:
+      required: true
+
+  - type: textarea
+    id: section-changed
+    attributes:
+      label: Section changed
+      description: "What part of the repository or its configuration changed?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: change
+    attributes:
+      label: Change
+      description: "Describe exactly what changed."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Reason
+      description: "Why was this change necessary?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: "How does this affect future research, writing, or repository operation?"
+    validations:
+      required: true

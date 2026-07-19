@@ -1,0 +1,110 @@
+name: AI-Assisted Research Scaffold (optional)
+
+# Drafts a SCAFFOLD Research Entry issue from a topic — Phase 1
+# (Market Scan & Story Selection) of docs/10-daily-workflow.md only. It
+# does not perform verification, does not classify evidence tiers, and
+# cannot satisfy the QA Gate on its own. Every field it fills is marked
+# [ai-drafted, unverified] and the issue is labeled "ai-assisted" so it
+# gets extra scrutiny, not less, before a human runs it through Phases
+# 2-6 and the QA Gate.
+#
+# Requires an ANTHROPIC_API_KEY repository secret. Entirely optional —
+# delete this file if you don't want it. Nothing else in the framework
+# depends on it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "Topic or angle to scaffold a research entry for"
+        required: true
+        type: string
+
+permissions:
+  issues: write
+
+jobs:
+  draft-scaffold:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Request a scaffold draft from the Anthropic API
+        id: draft
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TOPIC: ${{ inputs.topic }}
+        run: |
+          PROMPT=$(cat <<PROMPT_EOF
+          You are drafting a SCAFFOLD ONLY for a crypto research entry — not a verified analysis.
+          Topic: ${TOPIC}
+
+          Produce concise scaffold content the researcher will still need to verify:
+          1. A one-line summary of the story angle.
+          2. Which of the six ranking criteria (Evidence Strength, Educational Value, Market Impact,
+             Originality, Shelf Life, Mechanism Quality) look most promising for this angle, and why —
+             as hypotheses to check, not conclusions.
+          3. A short list of primary-source types worth checking first (do not assert any specific
+             claim as verified; you have no browsing tool and no live evidence access).
+          4. An explicit reminder line: "UNVERIFIED — complete Phases 2-6 and the QA Gate before publication."
+
+          Keep it under 200 words total. Do not assign an Evidence Tier or a Publication Status —
+          those require actual verification this draft cannot perform.
+          PROMPT_EOF
+          )
+
+          RESPONSE=$(PROMPT_TEXT="$PROMPT" python3 -c "
+          import json, os
+          print(json.dumps({
+              'model': 'claude-sonnet-5',
+              'max_tokens': 500,
+              'messages': [{'role': 'user', 'content': os.environ['PROMPT_TEXT']}]
+          }))
+          " | curl -sS https://api.anthropic.com/v1/messages \
+              -H "content-type: application/json" \
+              -H "x-api-key: ${ANTHROPIC_API_KEY}" \
+              -H "anthropic-version: 2023-06-01" \
+              -d @-)
+
+          echo "$RESPONSE" | python3 -c "
+          import json, sys
+          data = json.load(sys.stdin)
+          text = ''.join(b.get('text','') for b in data.get('content', []) if b.get('type') == 'text')
+          if not text:
+              print('AI draft failed or returned no content: ' + json.dumps(data)[:500])
+              sys.exit(1)
+          print(text)
+          " > draft_body.txt
+
+          {
+            echo "DRAFT<<DRAFT_EOF"
+            cat draft_body.txt
+            echo "DRAFT_EOF"
+          } >> "$GITHUB_ENV"
+
+      - name: Open scaffold issue
+        uses: actions/github-script@v7
+        env:
+          TOPIC: ${{ inputs.topic }}
+          DRAFT: ${{ env.DRAFT }}
+        with:
+          script: |
+            const topic = process.env.TOPIC;
+            const draft = process.env.DRAFT;
+
+            const body = [
+              `**[ai-drafted, unverified]** Scaffold generated for topic: _${topic}_`,
+              "",
+              draft,
+              "",
+              "---",
+              "This is Phase 1 (Market Scan & Story Selection) only, per [Daily Workflow](../../blob/main/docs/10-daily-workflow.md). ",
+              "Complete Phases 2-6 and the [QA Gate](../../blob/main/docs/08-qa-gate.md) manually before applying any `status:PASS*` label — ",
+              "QA Gate Enforcement will not accept an unverified draft regardless of this label.",
+            ].join("\n");
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[Scaffold] ${topic}`,
+              labels: ["type:research", "ai-assisted", "status:in-progress"],
+              body,
+            });

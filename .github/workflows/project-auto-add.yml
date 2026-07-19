@@ -2,30 +2,68 @@ name: Add to Project Board
 
 # Auto-adds new Research Entries and Source Reliability records to the
 # GitHub Projects (v2) board acting as the Research Database / Source
-# Reliability Database. Requires a PAT with `project` scope stored as
-# the ADD_TO_PROJECT_PAT secret (the default GITHUB_TOKEN cannot write to
-# user/org-level Projects v2). See SETUP.md for how to create it and the
-# exact project URL to put below.
+# Reliability Database.
+#
+# Requires:
+#   - Repository variables RESEARCH_PROJECT_URL and SOURCE_PROJECT_URL
+#     (Settings -> Secrets and variables -> Actions -> Variables), set to
+#     the real board URLs from SETUP.md step 2.
+#   - A PAT with `project` scope stored as the ADD_TO_PROJECT_PAT secret —
+#     the default GITHUB_TOKEN cannot write to user/org-level Projects v2.
+#
+# Using repository variables instead of hardcoded URLs means this file
+# never needs to change per-repository, and misconfiguration fails loudly
+# (see the guard job below) instead of silently doing nothing.
 
 on:
   issues:
     types: [opened]
 
+permissions:
+  issues: read
+
 jobs:
+  guard:
+    runs-on: ubuntu-latest
+    outputs:
+      research_configured: ${{ steps.check.outputs.research_configured }}
+      source_configured: ${{ steps.check.outputs.source_configured }}
+    steps:
+      - id: check
+        run: |
+          research_url="${{ vars.RESEARCH_PROJECT_URL }}"
+          source_url="${{ vars.SOURCE_PROJECT_URL }}"
+
+          if [ -z "$research_url" ]; then
+            echo "::warning::RESEARCH_PROJECT_URL repository variable is not set — Research Entries will not be added to a board. See SETUP.md step 2-3."
+            echo "research_configured=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "research_configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+          if [ -z "$source_url" ]; then
+            echo "::warning::SOURCE_PROJECT_URL repository variable is not set — Source Reliability records will not be added to a board. See SETUP.md step 2-3."
+            echo "source_configured=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "source_configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
   add-research-to-project:
-    if: contains(github.event.issue.labels.*.name, 'type:research')
+    needs: guard
+    if: needs.guard.outputs.research_configured == 'true' && contains(github.event.issue.labels.*.name, 'type:research')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/add-to-project@v1.0.2
         with:
-          project-url: https://github.com/users/OWNER/projects/PROJECT_NUMBER # Research Database board — replace with your real URL
+          project-url: ${{ vars.RESEARCH_PROJECT_URL }}
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
 
   add-source-to-project:
-    if: contains(github.event.issue.labels.*.name, 'type:source')
+    needs: guard
+    if: needs.guard.outputs.source_configured == 'true' && contains(github.event.issue.labels.*.name, 'type:source')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/add-to-project@v1.0.2
         with:
-          project-url: https://github.com/users/OWNER/projects/PROJECT_NUMBER_2 # Source Reliability Database board — replace with your real URL
+          project-url: ${{ vars.SOURCE_PROJECT_URL }}
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
