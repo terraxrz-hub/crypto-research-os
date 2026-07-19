@@ -2,7 +2,7 @@
 
 Every meaningful change to the operating framework is recorded here or as a `type:changelog` GitHub Issue — preserving the reasoning behind each change so rules evolve deliberately, not accidentally.
 
-**Versioning strategy:** changelog entries live as Issues labeled `type:changelog`, with structured fields (Version, Section Changed, Change, Reason, Impact) — auto-opened by the **Changelog Automation** workflow whenever `docs/` changes on `main`, or opened manually via the **Changelog Entry** issue form for changes that don't touch `docs/` directly (a Projects board schema change, a workflow permission change, etc.). This file is a static index of tagged releases and is not appended to by hand for day-to-day rule changes — check the `type:changelog` label for the live log, and see [Releases](../../releases) for the versioned, citable snapshots.
+**Versioning strategy:** changelog entries live as Issues labeled `type:changelog`, with structured fields (Version, Section Changed, Change, Reason, Impact) — auto-opened by the **Changelog Automation** workflow whenever `docs/` changes on `main`, or opened manually via the **Changelog Entry** issue form for changes that don't touch `docs/` directly (a Projects board schema change, a workflow permission change, etc.). This file is a static index of tagged releases and is not appended to by hand for day-to-day rule changes — check the `type:changelog` label for the live log, and see [Releases](https://github.com/terraxrz-hub/crypto-research-os/releases) for the versioned, citable snapshots.
 
 A version gets tagged (`vX.Y.Z`, see the **Release** workflow) when a set of `type:changelog` issues represents a coherent, shippable change to the framework — not on every individual docs edit.
 
